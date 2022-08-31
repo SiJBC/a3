@@ -28,14 +28,6 @@ const UserProvider: React.FC<iProps> =
             }
     },[user])
 
-    useEffect(() => {
-        if(user !== undefined){
-            if(user.length > 0){
-                setLoggedIn(true)
-            }
-        } 
-    },[])
-
     return(
         <UserContext.Provider value={userVal}>
             {children}

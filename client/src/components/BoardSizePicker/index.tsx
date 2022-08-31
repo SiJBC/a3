@@ -1,6 +1,4 @@
-import { useEffect, useRef, useState, useContext } from 'react'
-import { UserContext } from '../../context'
-import { UserProvider } from '../../providers'
+import { useEffect, useRef } from 'react'
 import s from './BoardSizePicker.module.css'
 
 

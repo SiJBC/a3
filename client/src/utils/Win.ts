@@ -23,14 +23,14 @@ export default class Win {
         this.x = this.target !== undefined ? JSON.parse(this.target).x : 0
         this.y = this.target !== undefined ? JSON.parse(this.target).y : 0
         this.n = 1
-        this.eastTile = `{\"x\":${this.x+this.n}, \"y\":${this.y}}`
-        this.westTile = `{\"x\":${this.x-this.n}, \"y\":${this.y}}`
-        this.northTile = `{\"x\":${this.x}, \"y\":${this.y+this.n}}`
-        this.southTile = `{\"x\":${this.x}, \"y\":${this.y-this.n}}`
-        this.southeastTile = `{\"x\":${this.x+this.n}, \"y\":${this.y-this.n}}`
-        this.northwestTile = `{\"x\":${this.x-this.n}, \"y\":${this.y+this.n}}`
-        this.southwestTile = `{\"x\":${this.x-this.n}, \"y\":${this.y-this.n}}`
-        this.northeastTile = `{\"x\":${this.x+this.n}, \"y\":${this.y+this.n}}`
+        this.eastTile = `{"x":${this.x+this.n}, "y":${this.y}}`
+        this.westTile = `{"x":${this.x-this.n}, "y":${this.y}}`
+        this.northTile = `{"x":${this.x}, "y":${this.y+this.n}}`
+        this.southTile = `{"x":${this.x}, "y":${this.y-this.n}}`
+        this.southeastTile = `{"x":${this.x+this.n}, "y":${this.y-this.n}}`
+        this.northwestTile = `{"x":${this.x-this.n}, "y":${this.y+this.n}}`
+        this.southwestTile = `{"x":${this.x-this.n}, "y":${this.y-this.n}}`
+        this.northeastTile = `{"x":${this.x+this.n}, "y":${this.y+this.n}}`
     }
 
     checkDirection(): string | undefined{
@@ -62,19 +62,19 @@ export default class Win {
 
     setN(){
         this.n = this.n + 1
-        this.eastTile = `{\"x\":${this.x+this.n}, \"y\":${this.y}}`
-        this.westTile = `{\"x\":${this.x-this.n}, \"y\":${this.y}}`
-        this.northTile = `{\"x\":${this.x}, \"y\":${this.y+this.n}}`
-        this.southTile = `{\"x\":${this.x}, \"y\":${this.y-this.n}}`
-        this.southeastTile = `{\"x\":${this.x+this.n}, \"y\":${this.y-this.n}}`
-        this.northwestTile = `{\"x\":${this.x-this.n}, \"y\":${this.y+this.n}}`
-        this.southwestTile = `{\"x\":${this.x-this.n}, \"y\":${this.y-this.n}}`
-        this.northeastTile = `{\"x\":${this.x+this.n}, \"y\":${this.y+this.n}}`
+        this.eastTile = `{"x":${this.x+this.n}, "y":${this.y}}`
+        this.westTile = `{"x":${this.x-this.n}, "y":${this.y}}`
+        this.northTile = `{"x":${this.x}, "y":${this.y+this.n}}`
+        this.southTile = `{"x":${this.x}, "y":${this.y-this.n}}`
+        this.southeastTile = `{"x":${this.x+this.n}, "y":${this.y-this.n}}`
+        this.northwestTile = `{"x":${this.x-this.n}, "y":${this.y+this.n}}`
+        this.southwestTile = `{"x":${this.x-this.n}, "y":${this.y-this.n}}`
+        this.northeastTile = `{"x":${this.x+this.n}, "y":${this.y+this.n}}`
     }
 
     tileCheck(state: TYPES.iState):number {
         let targetTile: string | undefined = this.checkDirection()
-        if(state.HashMap && targetTile != undefined){
+        if(state.HashMap && targetTile !== undefined){
             if(!state.HashMap.has(targetTile)){
                 return 0
             }

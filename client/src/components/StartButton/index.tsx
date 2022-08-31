@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import s from "./StartButton.module.css"
 import { useNavigate } from 'react-router-dom'
 import {useLocalStorage} from '../../hooks'
@@ -12,7 +12,7 @@ interface props{
   const navigate = useNavigate()
   const [buttonDisabled, setButtonDisabled] = useState(true)
   const [buttonClass, setButtonClass] = useState<string>(`${s.container} ${s.disabled}`)
-  const [boardSizeStore, saveBoardSizeStore] = useLocalStorage<
+  const [_, saveBoardSizeStore] = useLocalStorage<
     Record<string, number | undefined>
   >('boardSize', {})
   
