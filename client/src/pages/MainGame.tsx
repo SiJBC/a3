@@ -7,6 +7,7 @@ const {BoardDisplay} = components
  const MainGame: React.FC = () => {
 
     const [boardSize] = useLocalStorage<any>('boardSize', []) 
+    const [gameId] = useLocalStorage<any>('gameId', []) 
     const [win, setWin] = useState(false)
 
     const setWinCB = (win?: boolean) => {
@@ -18,10 +19,10 @@ const {BoardDisplay} = components
 
   return (
     <div className={s.mainGameContainer}>
-      
       <button style={{ border: 'grey 1px solid', padding: '1rem', fontSize: '2rem', color: 'white', background: 'grey' }} onClick={() => window.location.reload()}>RESET</button>
       <div>
         <BoardDisplay 
+        gameId={gameId}
         boardMap={new Map()} 
         boardSize={boardSize.boardSize} 
         gameActive={true}

@@ -3,15 +3,21 @@ import { UserContext} from '../../context'
 import { useLocalStorage } from '../../hooks'
 import s from './Form.module.css'
 import { useNavigate } from 'react-router-dom'
+import { post} from '../../utils/http'
 
-const Form: React.FC = () => {
+interface Props{
+  register: boolean
+}
+
+const Form: React.FC<Props> = ({register}: Props) => {
 
   const userContext = useContext(UserContext)
   const {setLoggedInCB} = userContext
     
     interface User{
         username: string,
-        password: string
+        password?: string,
+        token?: string
     }
 
     const user: User ={
@@ -31,24 +37,54 @@ const Form: React.FC = () => {
           username: username,
           password: password,
         } 
-        if(JSON.stringify(user) === JSON.stringify(FormUser)){
-          navigate('/')
-          setLoggedInCB(true)
-          saveUserStore({user: FormUser})
-        }else{
-          setError(true)
-          setUsername('')
-          setPassword('')
-          setTimeout(() => {
-            setError(false)
-          }, 3000)
+        if(register === true){
+          post(
+            '/api/auth/register', FormUser
+          ).then((res: any) => {
+            userContext.username = FormUser.username
+            const UserStoreObject = {
+              username: FormUser.username,
+              token: res.accessToken as string
+            }
+            navigate('/')
+            setLoggedInCB(true)
+            saveUserStore({user: UserStoreObject})
+          })
+        }
+        else{
+          post(
+            '/api/auth/login', FormUser
+          ).then((res: any) => {
+            userContext.username = FormUser.username
+            const UserStoreObject = {
+              username: FormUser.username,
+              token: res.accessToken as string
+            }
+            navigate('/')
+            setLoggedInCB(true)
+            saveUserStore({user: UserStoreObject})
+          }).catch((err) => {
+            console.log(err)
+          })
+
+
+          if(JSON.stringify(user) === JSON.stringify(FormUser)){
+            navigate('/')
+            setLoggedInCB(true)
+            saveUserStore({user: FormUser})
+          }else{
+            setError(true)
+            setUsername('')
+            setPassword('')
+            setTimeout(() => {
+              setError(false)
+            }, 3000)
+          }
         }
     } 
 
   return (
     <div className={s.container}>
-      <h3>username: admin</h3>
-      <h3>password: admin</h3>
       <form onSubmit={(e) => formHandler(e)}>
         <label>
             Username
@@ -58,7 +94,8 @@ const Form: React.FC = () => {
             Password
         <input data-testid="password" placeholder={'password'} value={password} onChange={(e) => setPassword(e.target.value)} className={s.input} type='password'></input>
         </label>
-        <button className={s.button} type='submit'>Login</button>
+        <button className={s.button} type='submit'>{ 
+        register ? <>Register</> : <>Login</>}</button>
         {error ? <h3 data-testid="error message">Error Incorrect username and or password</h3> : <></> }
       </form>
     </div>

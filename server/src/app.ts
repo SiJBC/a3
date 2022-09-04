@@ -1,33 +1,29 @@
-import express, { Express, Request, Response } from 'express';
-import dotenv from 'dotenv';
-import mongoose from 'mongoose';
-
-import connectDB from './util/connectDB';
-import theatreHandler from './handler/theatres.handler';
-import movieHandler from './handler/movie.handler';
-import bookingHandler from './handler/booking.handler';
-import sessionHandler from './handler/session.handler';
-import authHandler from './handler/auth.handler';
-
+import express, {Express} from 'express'
+import dotenv from 'dotenv'
+import authHandler from './handlers/auth.handler'
+import gameHandler from './handlers/game.handler'
+import mongoose from 'mongoose'
+import connectDB from './utils/connectDB'
 dotenv.config();
+connectDB()
 
-// connect to database
-connectDB();
+import * as fs from "fs";
+import * as path from "path";
 
-const app: Express = express();
-const port = process.env.PORT;
-app.use(express.json());
+export const privateKey = fs.readFileSync(
+  path.join(__dirname, "../Keys/private.pem"), "utf8");
+export const publicKey = fs.readFileSync(path.join(__dirname, "../Keys/public.pem"), "utf8")
 
-app.use('/api/theatres', theatreHandler)
-app.use('/api/movies', movieHandler);
-app.use('/api/bookings', bookingHandler)
-app.use('/api/sessions', sessionHandler)
-app.use('/api/auth', authHandler);
+const app: Express = express()
+const port = process.env.PORT 
+app.use(express.json())
 
-// only listen to request when DB connection is established
+app.use('/api/auth', authHandler)
+app.use('/game', gameHandler)
+
 mongoose.connection.once('connected', () => {
-  console.log('⚡️[server]: Connected to MongoDB.');
+  console.log('⚡️[server]: Connected to MongoDB.')
   app.listen(port, () => {
-    console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
-  });
+    console.log(`⚡️[server]: Server is running at https://localhost:${port}`)
+  })
 })

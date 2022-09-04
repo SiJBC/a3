@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocalStorage } from "../hooks";
 import UserContext from "../context/UserContext";
 import {UserType} from '../types'
+import { verifyAuth } from '../utils/http'
 
 interface iProps {
     children: React.ReactNode
@@ -23,6 +24,9 @@ const UserProvider: React.FC<iProps> =
     useEffect(() => {
             if(user !== undefined){
                 if(user.length > 0){
+                const token = user.user.token
+                verifyAuth(token, 'api/auth/verify')
+                .then((res) => console.log(res))
                     setLoggedIn(true)
                 }
             }
